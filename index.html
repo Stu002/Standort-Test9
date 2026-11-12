@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Standort-Test</title>
+</head>
+<body>
+    <h2>Standort-Freigabe erforderlich</h2>
+    <p>Bitte erlauben Sie den Zugriff, um fortzufahren.</p>
+    <button onclick="getLoc()">Standort freigeben</button>
+    <p id="output"></p>
+
+    <script>
+        function getLoc() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("output").innerText = "Geolocation wird von diesem Browser nicht unterstützt.";
+            }
+        }
+
+        function showPosition(position) {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            document.getElementById("output").innerText = "Breitengrad: " + lat + ", Längengrad: " + lon;
+            
+            // Hier könnte man die Koordinaten per fetch() an einen eigenen Server senden
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("output").innerText = "Nutzer hat den Zugriff abgelehnt.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("output").innerText = "Standortinformationen sind nicht verfügbar.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("output").innerText = "Die Zeitüberschreitung beim Abrufen des Standorts ist abgelaufen.";
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
